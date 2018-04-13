@@ -3,19 +3,19 @@ import traceback
 
 import sys
 # Add PYTHONPATH, then we may import all the objects below this folder.
-sys.path.insert(0,"/Users/abc/git/cloud/etl")  
+sys.path.insert(0,"/Users/charliezhu/git/bi-cloud/etl")  
 
 # import tool to parse .ini configuration file.
 # See below link for the explaination and examples:
 # http://www.postgresqltutorial.com/postgresql-python/connect/
-# ConfigParser().read(), returns 2 dimensional array, e.g.: [[a1,a2],[b1,b2], ...].
+# ConfigParser().read(), returns a 2 dimensional array, e.g.: [[a1,a2],[b1,b2], ...].
 from etl.pipeline_core.config import Config
 
 class DbTool(object):
   # initialize a local field(object property/attribute). Constructor.
   # config = Config.load("/Users/abc/aws/database.ini")
-  def __init__(self, ini_file) # put config constructor/initializer here?
-    config = Config.load(ini_file)
+  def __init__(self, ini_file): # put config constructor/initializer here?
+    self.config = Config.load(ini_file)
 
   # Build a dictionary object to connect to a database.
   # {'user': 'scala_user', 'password': '', 'host': 'localhost', 'database': 'scala_db'}
@@ -33,11 +33,13 @@ class DbTool(object):
 def test_query(conn, app_name_db_passwd):
   # Use loan pattern to open a cursor, it'll be automatically closed after exit the scope.
   with conn.cursor() as cur:    
-    cur.execute("""select count(*) from version() """)
+    cur.execute("""SELECT table_catalog, table_schema, table_name
+      FROM information_schema.tables LIMIT 4
+    """)
     rows = cur.fetchall()
     print( "\nShow me the data:\n")
     for row in rows:
-        print( "row count:   ", row[0])
+        print( "output:   ", row[0], row[2])
 
 def main():
   try:
