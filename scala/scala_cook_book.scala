@@ -247,6 +247,8 @@ val stderr = new StringBuilder
 val outLogger = ProcessLogger(line => stdout.append(line), line => stderr.append(line))
 val status = Seq("find", "/usr", "-name", "make") ! outLogger
 
+stdout.mkString
+stderr.mkString
 stdout.clear
 stderr.clear
 

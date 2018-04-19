@@ -1,4 +1,5 @@
 // Scala Essential Training for Data Science - Ben at Lynda,
+// 2017.12
 
 // Parallel collections,
 val v = (1 to 1000).toArray
