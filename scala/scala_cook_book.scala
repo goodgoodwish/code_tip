@@ -279,10 +279,11 @@ try {
 
 // 12.1 open and read text files in Scala
 
+Open a file, and Handling exceptions,
 https://alvinalexander.com/scala/how-to-open-read-text-files-in-scala-cookbook-examples
 
 // Automatically closing the resource,
-Object Control {
+object Control {
   def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B = {
     try {
       f(resource)
