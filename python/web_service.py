@@ -1,9 +1,18 @@
-import urllib.request
+try:
+    from urllib.request import Request, urlopen  # Python 3
+except ImportError:
+    from urllib2 import Request, urlopen  # Python 2
+
 import json
 import psycopg2
 
 def ranks_from_api():
-  contents = urllib.request.urlopen("http://localhost:8080/gp").read()
+  # import urllib
+  # contents = urllib.request.urlopen("http://localhost:8080/gp").read()
+
+  q = Request("http://localhost:8080/gp")
+  q.add_header("apiKey", "abc====")
+  contents = urlopen(q).read()
   jsonContent = json.loads(contents.decode('utf-8'))
 
   ranks = []
