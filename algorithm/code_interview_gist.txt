@@ -1,0 +1,119 @@
+﻿算法面试小结。
+来自亚马逊 SDE 高级主管：
+
+
+我个人觉得看video比看书好理解。你看不看网上的教程.
+
+
+算法是有顺序的，排序的冒泡，选择，插入，快速，堆栈，shell，合并，bucket, radix 是一个系列，合在一起看适应，不适应的场合，时间空间复杂度，等等，对比着比较好。
+
+
+二叉树的前序，中序，后序，层次遍历，深度优先，广度优先，best first , A star, 等等，也是一个体系，得对比着看。
+
+
+面试不会问，怎么dfs啊？会问应用题，问你应该用哪个算法。你跳来跳去的看个体算法，不连起来看体系，就不知道该怎么选择算法。
+
+
+Leetcode 分类：
+
+
+木匠的读书练习 路线图: https://workflowy.com/s/bWv.MLO6aF6zmG
+
+
+
+
+
+
+来自 硅谷 Linkedin 高级软件工程师。
+== chat history ==  
+
+
+Q: udemy.com 最近课程促销，US$9, CA$14 ,
+各位有 udemy 好的面试算法和语言课程推荐吗？
+
+
+A: as far as I know. most people will do JiuZhang and leetcode, no others.
+
+
+Excellent !
+👍
+👍
+
+
+Q:
+九章算法班, $200
+url https://www.jiuzhang.com/course/1
+
+
+BitTiger, CS501 算法面试冲刺课, $6000,
+https://www.bittiger.io/livecourses/pbmhEBJzyhskhS6Kq
+--
+BitTiger的课程, $6000 , 比九章贵30倍。
+
+
+A: The reason is to save time, algorithm and data structure is time consuming, you have to select the best one only.
+
+
+for jiuzhang, sharing to wechat group or weibo, you will get half price, just FYI.
+
+
+Q: Wonderful !  Thanks 10k,
+
+
+我的 Oracle/Amazon/Linkedin 老同事朋友就推荐了九章。
+
+
+A: they increased price, it used to be around 100 dollars only before. 
+
+
+Q: 对呀，咱以前也是 DBA， 20多年了。 DBA 转码。
+
+
+A: also, for leetcode, try to use premium as well. 
+
+
+Q: 谢谢指点。咱就一心一意研究九章，不用四处瞎逛了。一举解决了咱的多重选择综合症。
+
+
+A: for example, when you have premium, you will see all questions for one company, such as LinkedIn, Facebook etc.
+
+
+so then when you focus on interview of that company, you will have over 50% of chances of seeing the problems already with multiple solutions at hand.
+
+
+Q: 谢谢你宝贵的经验。
+
+
+A: you are welcome
+ping me any questions
+
+
+Q: 咱偏远地区人民 受益匪浅。
+要得，要得，一定的。
+我突击三个月，10月份开始面试，
+
+
+A: cool, best of luck
+
+
+Q: 屡败屡战，准备好了倍拒绝一百次。
+
+
+A: just believe you can do it, and you will do it. and I know you will.
+
+
+Q: ha-ha. Excellent !
+
+
+Q: Cracking the Coding Interview [ ... ] Amazon, https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850
+
+
+我准备从这本书开始，你觉得这部书还有价值吗？
+
+
+A: Yes, it has quite good value, but for reference only. like I said, it may cause too much time reading and working on the problems.
+A: ignore brain teaser part, all big companies don't do brain teaser questions.
+
+
+Q: Got it.
+我调整一下我的路线图。晚点请你指正。
