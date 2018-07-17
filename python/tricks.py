@@ -17,7 +17,17 @@ print(s1n)
 print(s2n)
 
 for i in range(3):
-  print(i)
+    print(i)
 
 list(filter(lambda x: x>1, range(3)))  # Lambda
 [x for x in range(4) if x > 1]  # list comprehension, or generator expression 
+
+# type hints
+
+def foo(a: str, b: int) -> str:
+  ms: str = a + str(b)
+  print(a, b)
+  return ms 
+  
+
+foo("25", 78)

@@ -7,35 +7,35 @@ import json
 import psycopg2
 
 def ranks_from_api():
-  # import urllib
-  # contents = urllib.request.urlopen("http://localhost:8080/gp").read()
+    # import urllib
+    # contents = urllib.request.urlopen("http://localhost:8080/gp").read()
 
-  q = Request("http://localhost:8080/gp")
-  q.add_header("apiKey", "abc====")
-  contents = urlopen(q).read()
-  jsonContent = json.loads(contents.decode('utf-8'))
+    q = Request("http://localhost:8080/gp")
+    q.add_header("apiKey", "abc====")
+    contents = urlopen(q).read()
+    jsonContent = json.loads(contents.decode('utf-8'))
 
-  ranks = []
-  platform = jsonContent["device"]
-  app_id = 351804002
-  game_name = "Slingo Arcade"
-  publisher_id = 20200001614793
-  publisher_name = "Blastworks Inc."
+    ranks = []
+    platform = jsonContent["device"]
+    app_id = 351804002
+    game_name = "Slingo Arcade"
+    publisher_id = 20200001614793
+    publisher_name = "Blastworks Inc."
 
-  elem = jsonContent['product_ranks'][0]['ranks']
+    elem = jsonContent['product_ranks'][0]['ranks']
 
-  for x in jsonContent['product_ranks']:
+    for x in jsonContent['product_ranks']:
     country_name = x["country"]
     rank_type = x["feed"]
     casino_game = x["category"]
     for rank_date, rank_num in x["ranks"].items() :
-      ranks.append((platform, country_name, app_id, game_name, publisher_id, publisher_name
-      , rank_date, rank_type, rank_num, casino_game))
+        ranks.append((platform, country_name, app_id, game_name, publisher_id, publisher_name
+        , rank_date, rank_type, rank_num, casino_game))
 
-  for r in ranks :
+    for r in ranks :
     print(r)
 
-  return ranks
+    return ranks
 
 def insert_ranks(ranks):
   """ insert multiple rows into a table  """
