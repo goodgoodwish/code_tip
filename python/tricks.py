@@ -31,3 +31,48 @@ def foo(a: str, b: int) -> str:
   
 
 foo("25", 78)
+
+# 5 Common data structures
+
+# 5.1 
+
+phone_book = {
+    "bob": 1002,
+    "alice": 1003,
+    "jusling": 1004,
+}
+
+squares = {x: x*x for x in range(4)}
+
+{0: 0, 1: 1, 2: 4, 3: 9}
+
+import collections 
+
+d = collections.OrderedDict(one=1, two=2, three=3)
+d["four"] = 4
+d.keys()
+odict_keys(['one', 'two', 'three', 'four'])
+
+from collections import defaultdict
+dd = defaultdict(list)
+dd["dogs"].append("Rufus")
+dd["dogs"].append("Juliet")
+dd["dogs"]
+
+from collections import ChainMap
+dict1 = {'one': 1, 'two': 2}
+dict2 = {'three': 3, 'four': 4}
+chain = ChainMap(dict1, dict2)
+
+chain
+ChainMap({'one': 1, 'two': 2}, {'three': 3, 'four': 4})
+
+# ChainMap searches each collection in the chain
+# from left to right until it finds the key (or fails):
+chain['three']
+3
+chain['one']
+1
+chain['ten']
+KeyError: 'ten'
+

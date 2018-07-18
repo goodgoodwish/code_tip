@@ -11,6 +11,9 @@ Example:
 
 Attributes:
 
+author: Charlie Yi Zhu
+version: 1.0
+
 Todo:
     * Rewrite with google-api-python-client oauth2client.
 
@@ -80,7 +83,7 @@ def get_attachement(detach_dir:str):
                 if part.get('Content-Disposition') is None:
                     # print(part.as_string())
                     continue
-                file_name = part.get_file_name()
+                file_name = part.get_filename()
 
                 if bool(file_name):
                     # print("Raw Date: ", mail["Date"])
