@@ -132,7 +132,55 @@ for name, email in emails.items():
 
 7.1 Dictionary default values
 
+id_name = {
+    58: "Linton",
+    92: "Tom",
+    21: "Drewsling"
+}
+
+def greeting(user_id):
+    if user_id in id_name:
+        return f"Hi {id_name[user_id]} ! "
+    else:
+        return "Hi friend."
+
+    """easier to ask for forgiveness than permission, EAFP"""
+    try:
+        return f"Hi {id_name[user_id]} ! "
+    except KeyError:
+        return "Hi friend."
+
+user_id=18
+"Hi %s!" % id_name.get(user_id, "friend")
+
+user_id=21
+f"""Hi {id_name.get(user_id, "friend")}"""
+
 7.2 Sorting Dictionary for fun
+
+xs = {
+    "b": 3,
+    "c": 4,
+    "a": 2,
+    "d": 1,
+}
+
+sorted(xs.items())
+[('a', 2), ('b', 3), ('c', 4), ('d', 1)]
+
+sorted(xs.items(), key=lambda x: x[1])
+sorted(xs.items(), key=lambda x: x[1])
+[('d', 1), ('a', 2), ('b', 3), ('c', 4)]
+
+# using itemgetter() to retrieve specific fields,
+
+import operator
+sorted(xs.items(), key=operator.itemgetter(1))
+[('d', 1), ('a', 2), ('b', 3), ('c', 4)]
+sorted(xs.items(), key=operator.itemgetter(0))
+[('a', 2), ('b', 3), ('c', 4), ('d', 1)]
+sorted(xs.items(), key=operator.itemgetter(0), reverse=True)
+[('d', 1), ('c', 4), ('b', 3), ('a', 2)]
 
 7.3 Emulating Switch/Case statement with Dict 
 
@@ -164,3 +212,11 @@ a = AlwaysEqual()
 b = AlwaysEqual()
 
 hash(a), hash(b) # (4390785152, 4390785264)
+
+8 Pythonic productivity techniques
+
+8.1 Exploring Python modules and objects
+
+8.2 Isolating project dependencies with virtualenv
+
+8.3 Peeking behind the Bytecode curtain
