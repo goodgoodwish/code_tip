@@ -32,6 +32,29 @@ def foo(a: str, b: int) -> str:
 
 foo("25", 78)
 
+# 4 Class and OOP
+
+# 4.7 Class vs instance variable
+
+class Noodle:
+    ingredient = "flour"
+    name = "Noodle"
+    count = 0
+    def __init__(self, name):
+        self.name = name
+        self.count = 0
+    def eat(self):
+        self.__class__.count += 1
+        self.count += 2
+        print("instance name: ", self.name)
+        print("class name: ", self.__class__.name)
+        print("class var, ingr: ", self.__class__.ingredient)
+        print("instance var, count: ", self.count)
+        print("class var, count: ", self.__class__.count)
+
+qi_shan = Noodle("qi_shan")
+qi_shan.eat()
+
 # 5 Common data structures
 
 # 5.1 
@@ -76,3 +99,68 @@ chain['one']
 chain['ten']
 KeyError: 'ten'
 
+# 6 Looping and Iteration
+
+list(range(0, 10, 2))
+
+for i in range(0, 10, 2):
+    print(i)
+
+0
+2
+4
+6
+8
+
+my_itmes = ["A","B","C"]
+
+for item in my_itmes:
+    print(item)
+
+for i, item in enumerate(my_itmes):
+    print(f"{i}: {item}")
+
+emails = {
+    "Bob": "bob@abc.com",
+    "Alice": "alice@abc.com",
+}
+
+for name, email in emails.items():
+    print(f"{name} -> {email}" )
+
+7. 
+
+7.1 Dictionary default values
+
+7.2 Sorting Dictionary for fun
+
+7.3 Emulating Switch/Case statement with Dict 
+
+7.4 The craziest dict expression,
+
+>>> {True: "yes", 1: "no", 1.0: "maybe"}
+
+{True: 'maybe'}
+
+>>> True == 1 == 1.0
+True
+
+xs = dict()
+xs[True] = 'yes'
+xs[1] = 'no'
+xs[1.0] = 'maybe'
+
+["no", "yes"][True] # "yes" ,  True == 1.
+
+class AlwaysEqual:
+    def __eq__(self, other):
+        return True
+    def __hash__(self):
+        return id(self)
+
+AlwaysEqual() == 28 # True
+
+a = AlwaysEqual()
+b = AlwaysEqual()
+
+hash(a), hash(b) # (4390785152, 4390785264)
