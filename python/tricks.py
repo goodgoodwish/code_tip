@@ -1,4 +1,9 @@
 
+2 Patterns for cleaner Python 
+
+2.1 Covering your ass with Assertions 
+
+2.2 Complacent comma placement
 
 # 2.5 String formatting,
 
@@ -290,4 +295,39 @@ help(datetime.date)
 
 8.2 Isolating project dependencies with virtualenv
 
+cd ~/app/python
+python -m venv ./env1
+
+source ./env1/bin/activate
+
+which pip 
+which python 
+pip list 
+
+pip install schedule 
+pip list 
+
+deactivate
+
+find ./ -name requirements.txt
+
+.//git/bi-cloud/etl/requirements.txt
+
 8.3 Peeking behind the Bytecode curtain
+
+def greet(name):
+    return "Hi, " + name + "!_!"
+
+greet.__code__.co_code
+greet.__code__.co_varnames
+greet.__code__.co_consts
+
+import dis
+dis.dis(greet)
+
+  2           0 LOAD_CONST               1 ('Hi, ')
+              2 LOAD_FAST                0 (name)
+              4 BINARY_ADD
+              6 LOAD_CONST               2 ('!_!')
+              8 BINARY_ADD
+             10 RETURN_VALUE
