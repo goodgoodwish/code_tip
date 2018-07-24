@@ -182,7 +182,37 @@ sorted(xs.items(), key=operator.itemgetter(0))
 sorted(xs.items(), key=operator.itemgetter(0), reverse=True)
 [('d', 1), ('c', 4), ('b', 3), ('a', 2)]
 
-7.3 Emulating Switch/Case statement with Dict 
+7.3 Emulating Switch/Case statement with Dict, and function variable
+
+def my_func_1(a, b):
+    return a + b 
+
+def my_func_2(a, b):
+    return a * b
+
+def my_func_other(a, b):
+    return max(a, b)
+
+my_functions = [my_func_1, my_func_2]
+
+my_functions[0](3,5)
+8
+
+function_dict = {
+    "plus": my_func_1,
+    "multi": my_func_2,
+}
+
+function_dict["multi"](3,5)
+15
+
+def dispatch_dict(operator, x, y):
+    return function_dict.get(operator, my_func_other)(x, y)
+
+dispatch_dict("unknow", 7, 8)
+8
+dispatch_dict("plus", 7, 8)
+15
 
 7.4 The craziest dict expression,
 
@@ -213,9 +243,50 @@ b = AlwaysEqual()
 
 hash(a), hash(b) # (4390785152, 4390785264)
 
+7.5 Many ways to merge Dictionary
+
+xs = {"a": 1, "b": 2}
+ys = {"c": 3, "d": 4}
+
+zs = {}
+zs.update(xs)
+zs.update(ys)
+
+zs
+{'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+# Python 3.5
+zs = {**xs, **ys}
+
+{'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+7.6 Dictionary pretty printing
+
+zs = {'a': 1, 'b': 2, 'c': 0xc0ffee, 'd': 4}
+str(zs)
+
+import json
+json.dumps(zs, indent=4, sort_keys=True)
+
+zs["e"] = {1,2,3}
+
+import pprint
+pprint.pprint(zs)
+{'a': 1, 'b': 2, 'c': 12648430, 'd': 4, 'e': {1, 2, 3}}
+
 8 Pythonic productivity techniques
 
 8.1 Exploring Python modules and objects
+
+import datetime 
+dir(datetime)
+
+dir(datetime.date)
+
+[x for x in dir(datetime) if "date" in x.lower()]
+['date', 'datetime', 'datetime_CAPI']
+
+help(datetime.date)
 
 8.2 Isolating project dependencies with virtualenv
 
