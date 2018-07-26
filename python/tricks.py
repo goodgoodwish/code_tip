@@ -1,9 +1,64 @@
 
 2 Patterns for cleaner Python 
 
-2.1 Covering your ass with Assertions 
+2.1 Covering your ass with Assertions - debugging aid, test bugs
+
+assert_statement ::= "assert" test_condition [, error_message]
+
+if __debug__:
+    if not test_condition:
+        raise AssertionError(error_message)
+
+assert 0 <= price <= product["prince"]
 
 2.2 Complacent comma placement
+
+names = [
+    "Zhang 3",
+    "Li 4",
+    "Wang 5",
+]
+
+2.3 Context managers and the with statement 
+
+with open("hello.txt", "w") as f:
+    f.write("Hellow, Yi. \n")
+
+f = open("hello.txt", "w")
+try:
+    f.write("Hello, Yi. \n")
+finally:
+    f.close()
+
+class ManageFile:
+    def __init__(self, name):
+        self.name = name
+    def __enter__(self):
+        self.file = open(self.name, "w")
+        return self.file 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+with ManageFile("h1.txt") as f:
+    f.write("Hi 1 \n")
+    f.write("bye now. \n")
+
+from contextlib import contextmanager
+
+@contextmanager
+def managed_file(name):
+    try:
+        f = open(name, "w")
+        yield f 
+    finally:
+        f.close()
+
+with managed_file("h2.txt") as f:
+    f.write("Hi 2 \n")
+    f.write("bye now. \n")
+
+2.4 Underscore, dunder, and more
 
 # 2.5 String formatting,
 
