@@ -60,6 +60,46 @@ with managed_file("h2.txt") as f:
 
 2.4 Underscore, dunder, and more
 
+_var : intend for internal use.
+var_ : break (keyword) naming conflict.
+__var: name mangling, to rewrite attribute name to avoid naming conflicts in subclass.
+
+class Test:
+    def __init__(self):
+        self.foo = 18
+        self.__bazz = 7
+    def get_mangled(self):
+        return self.__bazz
+    def __method(self):
+        return 42
+    def call_it(self):
+        return self.__method()
+
+t = Test()
+dir(t)
+['_Test__bazz', 'foo']
+t.get_mangled()
+7
+
+t.__method()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Test' object has no attribute '__method'
+
+t.call_it()
+42
+
+t._Test__bazz
+7
+t._Test__method()
+42
+
+__var__ : reserved for special use.
+_ : a variable is temporary or insignificant.
+
+car = ("red", "auto", 2005, 1812.5)
+color, _, _, mileage = car
+
 # 2.5 String formatting,
 
 my_name = 'Jusling'
@@ -91,6 +131,30 @@ def foo(a: str, b: int) -> str:
   
 
 foo("25", 78)
+
+# date time
+import datetime
+week_ago = datetime.date.today() - datetime.timedelta(days=7) # return example: datetime.date(2018, 7, 20)
+self.week_ago_str = "{:%Y-%m-%d}".format(week_ago) # example: 2018-07-20
+
+2.6 The Zen of Python 
+
+import this 
+
+3. Effective functions 
+
+3.1 Python function are first-class
+
+3.2 Lambda is single-expression function
+
+3.3 Decorator
+
+3.4 Fun with *args and **kwargs
+
+3.5 Function argument unpacking
+
+3.6 Nothing to return here
+
 
 # 4 Class and OOP
 

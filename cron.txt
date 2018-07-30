@@ -2,6 +2,7 @@
 # To deploy: crontab cron.txt 
 #
 # format:
-# min, hour, month_day, month, week_day, command
+# min, hour, month_day, month, week_day(1 - 7 => Monday - Sunday), command
 
 00 10 * * * /Users/charliezhu/work/bin/responsys.sh > /tmp/responsys.log 2>&1
+04 10 * * 4 /Users/charliezhu/work/bin/appapi.sh > /tmp/appapi.log 2>&1
