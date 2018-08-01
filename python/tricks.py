@@ -145,11 +145,193 @@ import this
 
 3.1 Python function are first-class
 
+def yell(text):
+    return text.upper() + "!"
+
+bark = yell 
+
+# Function is object, can be stored in data structures
+
+func_list = [bark, str.lower, str.capitalize]
+
+for f in func_list:
+    print(f("Hi there"), f)
+
+HI THERE! <function yell at 0x10129be18>
+hi there <method 'lower' of 'str' objects>
+Hi there <method 'capitalize' of 'str' objects>
+
+# Function can be passed to other functions
+
+def greet(func_a):
+    greeting = func_a("Hi, I like swimming.")
+    print(greeting)
+
+list(map(bark, ["hello", "hey", "hi"]))
+['HELLO!', 'HEY!', 'HI!']
+
+# Function can be nested
+# Function can be returned from another function.
+
+def get_speak_func(volume):
+    def whisper(text):
+        return text.lower() + "..."
+    def yell(text):
+        return text.upper() + "!"
+    if volume > 0.5:
+        return yell 
+    else:
+        return whisper
+
+get_speak_func(0.8)("Watch for horse poo")
+'WATCH FOR HORSE POO!'
+
+# Function can capture local state. Closure.
+
+def make_adder(base):
+    def add(x):
+        return base + x
+    return add
+
+plus_2 = make_adder(base=2)
+plus_5 = make_adder(base=5)
+
+plus_2(2) # 4
+plus_5(5) # 10
+
+# Object can behave like function
+
+class Adder:
+    def __init__(self, base):
+        self.base = base 
+    def __call__(self, x):
+        return self.base + x 
+
+plus_20 = Adder(20)
+plus_20(2) # 22
+
 3.2 Lambda is single-expression function
+
+# implicit return expression result,
+add = lambda x, y: x + y # Evaluate when access,
+add(1, 7)
+
+(lambda x, y: x + y)(1, 7) # Function expression
+
+list( filter(lambda x: x[0] + x[1] > 4, [(1,2),(2,3),(3,4),(4,5)]) )
+[(2, 3), (3, 4), (4, 5)]
 
 3.3 Decorator
 
+def null_decorator(func):
+    def box():
+        result = func()
+        return result + ", Zhang 3."
+    return box
+
+@null_decorator
+def greet():
+    return "Hi"
+
+# Decorator can modify behavior.
+# multi decorator
+
+def strong(func):
+    def box():
+        return "<strong>" + func() + "</strong>"
+    return box 
+
+def li(func):
+    def box():
+        return "<li>" + func() + "</li>"
+    return box 
+
+@li
+@strong 
+def greet():
+    return "How are you?"
+
+greet()
+'<li><strong>How are you?</strong></li>'
+
+# accept arguments
+# forward arguments
+
+def trace(func):
+    def box(*args, **kwargs):
+        print(f"LOG: {func.__name__}() start."
+              f"with {args}, {kwargs}")
+        result = func(*args, **kwargs)
+        print(f"LOG: {func.__name__}() end.")
+        return result
+    return box
+
+@trace 
+def greet(a,b,key,key2):
+    return "How are you?"
+
+greet("a","b",key="1",key2="2")
+
+LOG: greet() start.with ('a', 'b'), {'key': '1', 'key2': '2'}
+LOG: greet() end.
+'How are you?'
+
+# Debuggable decorators ,functools.wraps()
+def greet():
+    """return a friendly greeting."""
+    return "How are you?"
+
+greet.__doc__
+'return a friendly greeting.'
+greet.__name__
+'greet'
+
+import functools
+
+def upper_case(func):
+    @functools.wraps(func) # <<<
+    def wrapper():
+        result = func().upper()
+        return result
+    return wrapper
+
+@upper_case
+def greet():
+    """return a friendly greeting."""
+    return "How are you?"
+
+greet.__doc__
+'return a friendly greeting.'
+greet.__name__
+'greet'
+
 3.4 Fun with *args and **kwargs
+
+def foo(required_arg, *args, **kwargs):
+    print(required_arg)
+    if args:
+        print(args)
+    if kwargs:
+        print(kwargs)
+
+foo("abc-required", 1, 2, key1="value_1", key2 = "v2")
+
+abc-required
+(1, 2)
+{'key1': 'value_1', 'key2': 'v2'}
+
+class Car:
+    def __init__(self, color, wheel):
+        self.color = color
+        self.wheel = wheel 
+
+class AlwaysRedCar(Car):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.color = "red"
+
+AlwaysRedCar("green", 4).color
+'red'
 
 3.5 Function argument unpacking
 
