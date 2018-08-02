@@ -332,6 +332,8 @@ class AlwaysRedCar(Car):
 
 AlwaysRedCar("green", 4).color
 'red'
+AlwaysRedCar("green", wheel=8).wheel
+8
 
 3.5 Function argument unpacking
 

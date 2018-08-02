@@ -35,3 +35,7 @@ updateBit(2, 1, 0) // 010 -> 000
 ```python
 ```
 + Factory method
+
+
+## 8. Recursion and Dynamic programming
+
