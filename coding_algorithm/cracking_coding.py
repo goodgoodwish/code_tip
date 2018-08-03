@@ -1,9 +1,10 @@
 
 # 8.8 Permutation.
 
-# Prefix, Recursive
-
 # for i, v in enumerate(char_list):
+
+# Prefix, Recursive, Unique char Permutation
+# 排列组合的前缀法,
 
 def perm(prefix, list_chr, new_list=[]):
     if len(list_chr) == 1:
@@ -24,7 +25,8 @@ def perm_i(list_chr):
     comb_list = perm_i()
     pass
 
-# Insertion, Iterative
+# Insertion, Iterative, Unique char Permutation
+# 循环插入法，这次结果，作为下次输入，
 
 def perm_i_iter(list_chr):
     prev_list = [[list_chr[0]],]
