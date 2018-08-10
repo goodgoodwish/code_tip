@@ -116,8 +116,17 @@ s1i = f'Hello, {my_name}, you are {my_id} '
 print(s1n)
 print(s2n)
 
-for i in range(3):
-    print(i)
+from string import Template
+sql_tmpl = "PARTITION = {ds} "
+t = Template("Hi $ds.abc")
+u = '{ds.__init__}' # potentially leak secret keys
+for ds in [1,2,3]:
+    sql_fill = f"PARTITION = {ds}"
+    print (sql_tmpl.format(ds=ds))
+    print(t.substitute(ds=ds))
+    print(u.format(ds=ds))
+
+
 
 list(filter(lambda x: x>1, range(3)))  # Lambda
 [x for x in range(4) if x > 1]  # list comprehension, or generator expression 
@@ -135,7 +144,15 @@ foo("25", 78)
 # date time
 import datetime
 week_ago = datetime.date.today() - datetime.timedelta(days=7) # return example: datetime.date(2018, 7, 20)
-self.week_ago_str = "{:%Y-%m-%d}".format(week_ago) # example: 2018-07-20
+week_ago_str = "{:%Y-%m-%d}".format(week_ago) # example: 2018-07-20
+
+sql_tmpl = "INSERT INTO table_abc PARTITION = {ds} "
+start_date = datetime.datetime.strptime("2017-01-01", "%Y-%m-%d")
+
+for i in range(40):
+    curr_day = start_date + datetime.timedelta(days=i)
+    ds = "{:%Y-%m-%d}".format(curr_day)
+    print (sql_tmpl.format(ds=ds))
 
 2.6 The Zen of Python 
 
@@ -311,14 +328,24 @@ def foo(required_arg, *args, **kwargs):
     print(required_arg)
     if args:
         print(args)
+        for idx, item in enumerate(args):
+            print(idx, item)
     if kwargs:
         print(kwargs)
+        for (key, value) in kwargs.items():
+            print(f"key: {key}, value: {value} ")
 
-foo("abc-required", 1, 2, key1="value_1", key2 = "v2")
+foo("required_arg1", 1, 2, key1="value_1", key2 = 789)
 
-abc-required
+required_arg1
 (1, 2)
-{'key1': 'value_1', 'key2': 'v2'}
+0 1
+1 2
+{'key1': 'value_1', 'key2': 789}
+key: key1, value: value_1
+key: key2, value: 789
+
+* Forwarding optional or keyword arguments,
 
 class Car:
     def __init__(self, color, wheel):
@@ -337,8 +364,21 @@ AlwaysRedCar("green", wheel=8).wheel
 
 3.5 Function argument unpacking
 
-3.6 Nothing to return here
+def print_vector(x, y, z, *args, **kwargs):
+    print(f"<{x}, {y}, {z}. {args}. {kwargs} > ")
 
+tuple_vec = (1, 2, 3)
+print_vector(*tuple_vec)
+
+gen_expr = (x * x for x in range(5))
+print_vector(*gen_expr)
+<0, 1, 4. (9, 16)>
+
+dict_vec = {"y":2, "z":3, "x":1, "u":4}
+print_vector(**dict_vec)
+<1, 2, 3. (). {'u': 4} >
+
+3.6 Nothing to return here
 
 # 4 Class and OOP
 
