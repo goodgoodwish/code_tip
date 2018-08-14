@@ -38,3 +38,63 @@ def longestPalindrome(s):
 # longestPalindrome("abcdxdcab")
 longestPalindrome("cbaabcu")
 longestPalindrome("xucbaabcu")
+
+class Solution:
+    """
+    @param s: a string which consists of lowercase or uppercase letters
+    @return: the length of the longest palindromes that can be built
+    """
+    def longestPalindrome(self, s):
+        if s is None or s == "":
+            return 0
+        if len(s) <= 1:
+            return 1
+        char_cnt = {}
+        max_len = 0
+        for char in s:
+            print(char)
+            # if char in char_cnt:
+            #     char_cnt[char] += 1
+            # else:
+            #     char_cnt[char] = 1
+            char_cnt[char] = char_cnt.get(char,0) + 1
+        for char, cnt in char_cnt.items():
+            print(char, cnt)
+            if cnt < 2:
+                continue
+            else:
+                max_len = max_len + int(cnt/2)*2
+        if len(s) > max_len:
+            max_len += 1
+        return max_len
+
+test = Solution()
+test.longestPalindrome("uvaabbcc")
+
+Chapter 3
+
+class Solution:
+    """
+    @param nums: An integer array sorted in ascending order
+    @param target: An integer
+    @return: An integer, last position that value = target
+    """
+    def lastPosition(self, nums, target):
+        # write your code here
+        start = 0
+        end = len(nums) - 1
+        arr_len = len(nums)
+        while start <= end:
+            mid = int((start + end)/2)
+            if (nums[mid] == target):
+                while mid < arr_len - 1 and nums[mid + 1] == target:
+                    mid = mid + 1
+                return mid
+            elif target > nums[mid]:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return -1
+
+test = Solution()
+test.lastPosition(nums = [1, 2, 2, 2, 4, 5, 5], target = 2)
