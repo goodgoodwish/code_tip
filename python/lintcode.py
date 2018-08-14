@@ -71,7 +71,7 @@ class Solution:
 test = Solution()
 test.longestPalindrome("uvaabbcc")
 
-Chapter 3
+Chapter 3, Binary search.
 
 class Solution:
     """
@@ -98,3 +98,114 @@ class Solution:
 
 test = Solution()
 test.lastPosition(nums = [1, 2, 2, 2, 4, 5, 5], target = 2)
+
+class Solution:
+    """
+    @param nums: An integer array sorted in ascending order
+    @param target: An integer
+    @return: An integer, last position that value = target
+    Goal: Binary search template, from JiuZhang
+    """
+    def findPosition(self, nums, target):
+        if (nums == None or len(nums) == 0):
+            return -1
+        start = 0
+        end = len(nums) - 1
+        # 要点1: start + 1 < end .
+        while (start + 1 < end):
+	    # 要点2：start + (end - start) / 2 .
+            mid = int(start + (end - start) / 2)
+            # 要点3：=, <, > 分开讨论，mid 不 +1, 也不 -1 .
+            if (nums[mid] == target):
+                end = mid # first
+                # start = mid # last
+            elif (nums[mid] < target):
+                start = mid
+            else:
+                end = mid
+        # 要点4: 循环结束后，单独处理start和end.
+        print("Out of loop: ", start, end)
+        if (nums[start] == target):
+            return start
+        if (nums[end] == target):
+            return end
+        return -1
+
+test = Solution()
+test.findPosition(nums = [1, 2, 2, 2, 4, 5, 5], target = 2)
+
+
+class Solution:
+    """
+    @param nums: a mountain sequence which increase firstly and then decrease
+    @return: then mountain top
+    """
+    def mountainSequence(self, nums):
+        # write your code here
+        if nums is None or len(nums) == 0:
+            return None 
+        if len(nums) == 1:
+            return nums[0]
+        start = 0
+        end = len(nums) - 1
+        if nums[0] > nums[1]:
+            return nums[0]
+        if nums[end] > nums[end - 1]:
+            return nums[end]
+        while start + 1 < end:
+            mid = int(start + (end - start)/2)
+            if nums[mid] > nums[mid - 1] and nums[mid] > nums[mid + 1]:
+                return nums[mid]
+            if nums[mid] > nums[mid - 1] and nums[mid] < nums[mid + 1]:
+                start = mid
+            if nums[mid] < nums[mid - 1] and nums[mid] > nums[mid + 1]:
+                end = mid
+        return None
+
+test = Solution()
+test.mountainSequence(nums = [10, 9, 8, 7])
+test.mountainSequence(nums = [1, 2, 4, 8, 6, 3])
+
+class Solution:
+    """
+    @param A: an integer array
+    @param target: An integer
+    @param k: An integer
+    @return: an integer array
+    """
+    def kClosestNumbers(self, A, target, k):
+        new_arr = []
+        start = 0
+        end = len(A) - 1
+        target_pos = 0
+        top = 0
+        left = 1
+        right = 1
+        while start + 1 < end:
+            mid = int(start + (end - start)/2)
+            if A(mid) == target:
+                target_pos = mid
+                break
+            if A(mid) < target:
+                start = mid
+            else:
+                end = mid
+        if abs(A(start) - target) < abs(A(end) - target):
+            target_pos = start
+        else:
+            target_pos = end
+        new_arr[0] = A[target_pos]
+        while top < k:
+            if target_pos - left >=0 and abs(A(target_pos - left)) <= abs(A(target_pos + right)):
+                new_arr(top) = A(target_pos - left)
+                left += 1
+            else:
+                new_arr(top) = A(target_pos + right)
+                right += 1
+            top += 1
+        return new_arr
+
+
+
+test = Solution()
+test.kClosestNumbers(A = [1, 4, 6, 8], target = 3, k = 3)
