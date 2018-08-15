@@ -71,7 +71,7 @@ class Solution:
 test = Solution()
 test.longestPalindrome("uvaabbcc")
 
-Chapter 3, Binary search.
+Chapter 2, Binary search.
 
 class Solution:
     """
@@ -113,7 +113,7 @@ class Solution:
         end = len(nums) - 1
         # 要点1: start + 1 < end .
         while (start + 1 < end):
-	    # 要点2：start + (end - start) / 2 .
+	    # 要点2：start + (end - start) / 2, 2^32 - 1, result integer might overflow .
             mid = int(start + (end - start) / 2)
             # 要点3：=, <, > 分开讨论，mid 不 +1, 也不 -1 .
             if (nums[mid] == target):
@@ -166,6 +166,8 @@ test = Solution()
 test.mountainSequence(nums = [10, 9, 8, 7])
 test.mountainSequence(nums = [1, 2, 4, 8, 6, 3])
 
+### kClosestNumbers
+
 class Solution:
     """
     @param A: an integer array
@@ -178,34 +180,112 @@ class Solution:
         start = 0
         end = len(A) - 1
         target_pos = 0
-        top = 0
         left = 1
         right = 1
+        if k == 0:
+            return new_arr
         while start + 1 < end:
             mid = int(start + (end - start)/2)
-            if A(mid) == target:
-                target_pos = mid
-                break
-            if A(mid) < target:
+            if A[mid] == target:
+                end = mid
+            if A[mid] < target:
                 start = mid
             else:
                 end = mid
-        if abs(A(start) - target) < abs(A(end) - target):
+        if abs(A[start] - target) <= abs(A[end] - target):
             target_pos = start
         else:
             target_pos = end
-        new_arr[0] = A[target_pos]
-        while top < k:
-            if target_pos - left >=0 and abs(A(target_pos - left)) <= abs(A(target_pos + right)):
-                new_arr(top) = A(target_pos - left)
+        new_arr.append(A[target_pos])
+        print(target_pos)
+        for i in range(k - 1):
+            print(left, right, i)
+            if left > target_pos:
+                new_arr.append(A[target_pos + right])
+                right += 1
+            elif (right + target_pos) > (len(A) - 1):
+                new_arr.append(A[target_pos - left])
+                left += 1
+            elif abs(A[target_pos - left] - target) <= abs(A[target_pos + right] - target):
+                new_arr.append(A[target_pos - left])
                 left += 1
             else:
-                new_arr(top) = A(target_pos + right)
+                new_arr.append(A[target_pos + right])
                 right += 1
-            top += 1
         return new_arr
-
-
 
 test = Solution()
 test.kClosestNumbers(A = [1, 4, 6, 8], target = 3, k = 3)
+
+Chapter 3. 双指针 算法.
+
+class Solution:
+    """
+    @param numbers: An array of Integer
+    @param target: target = numbers[index1] + numbers[index2]
+    @return: [index1, index2] (index1 < index2)
+    """
+    def twoSum(self, numbers, target):
+        # write your code here
+        sort_nums = sorted(numbers)
+        left = 0
+        right = len(sort_nums) - 1 
+        while (left < right):
+            if sort_nums[left] + sort_nums[right] == target:
+                value1 = sort_nums[left]
+                value2 = sort_nums[right]
+                break
+            elif sort_nums[left] + sort_nums[right] < target:
+                left += 1 
+            else:
+                right -= 1 
+        print(value1, value2)
+        pos1 = numbers.index(value1)
+        if value1 == value2:
+            pos2 = numbers.index(value2, pos1 + 1)
+        else:
+            pos2 = numbers.index(value2)
+        if pos1 < pos2:
+            return [pos1, pos2]
+        else:
+            return [pos2, pos1]
+
+class Solution:
+    """
+    @param numbers: An array of Integer
+    @param target: target = numbers[index1] + numbers[index2]
+    @return: [index1, index2] (index1 < index2)
+    """
+    def twoSum(self, numbers, target):
+        # write your code here
+        num_set = set()
+        num_len = len(numbers)
+        for i in range(num_len):
+            if target - numbers[i] in num_set:
+                pos2 = i
+                value1 = target - numbers[i]
+                break
+            else:
+                num_set.add(numbers[i])
+        pos1 = numbers.index(value1)
+        return [pos1, pos2]
+
+test = Solution()
+test.twoSum([2,7,11,15], 9)
+test.twoSum([0, -1, 0], 0)
+
+# https://www.lintcode.com/problem/window-sum/description
+
+class Solution:
+    """
+    @param nums: a list of integers.
+    @param k: length of window.
+    @return: the sum of the element inside the window at each moving.
+    """
+    def winSum(self, nums, k):
+        if nums is None or len(nums) == 0:
+            return 0
+        if 
+
+test = Solution()
+test.winSum([1,2,7,8,5], 3)
