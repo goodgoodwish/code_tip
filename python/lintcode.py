@@ -284,8 +284,158 @@ class Solution:
     """
     def winSum(self, nums, k):
         if nums is None or len(nums) == 0:
-            return 0
-        if 
+            return []
+        start = 0
+        end = len(nums)
+        left = start
+        right = min(k, end) - 1
+        sum = 0
+        for i in range(right + 1):
+            sum += nums[i]
+        sums = [sum]
+        while right < end - 1:
+            left += 1
+            right += 1
+            sum = sum - nums[left - 1] + nums[right]
+            sums.append(sum)
+        return sums
 
 test = Solution()
 test.winSum([1,2,7,8,5], 3)
+
+# quick sort, merge sort, heap sort. O(nlogn) algorithm.
+
+
+class Solution:
+    """
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        # write your code here
+        if A is None or len(A) == 0:
+            return
+        start = 0
+        end = len(A) - 1
+        temp = [None] * len(A)
+        self.merge_sort(A, start, end, temp)
+        print(A)
+    def merge_sort(self, A, start, end, temp):
+        if start >= end:
+            return
+        mid = int((start + end)/2)
+        self.merge_sort(A, start, mid, temp)
+        self.merge_sort(A, mid + 1, end, temp)
+        self.merge(A, start, mid, end, temp)
+    def merge(self, A, start, mid, end, temp):
+        left_index = start 
+        right_index = mid + 1
+        temp_index = start
+        print(start, mid, end)
+        while (left_index <= mid and right_index <= end):
+            if A[left_index] < A[right_index]:
+                temp[temp_index] = A[left_index]
+                left_index += 1
+                temp_index += 1
+            else:
+                temp[temp_index] = A[right_index]
+                right_index += 1
+                temp_index += 1
+        while left_index <= mid:
+            print(temp_index, left_index, A, temp)
+            temp[temp_index] = A[left_index]
+            left_index += 1
+            temp_index += 1
+        while right_index <= end:
+            temp[temp_index] = A[right_index]
+            right_index += 1
+            temp_index += 1
+        for i in range(start, end + 1):
+            A[i] = temp[i]
+
+test = Solution()
+test.sortIntegers2([1,2,7,8,5])
+
+class Solution:
+    """
+    Merge Sort 2, better naming,
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        # write your code here
+        if A is None or len(A) == 0:
+            return
+        start = 0
+        end = len(A) - 1
+        sort_list = [None] * (end + 1)
+        self.merge_sort(A, start, end, sort_list)
+        print(A)
+    def merge_sort(self, A, start, end, sort_list):
+        if start >= end:
+            return
+        mid = int((start + end)/2)
+        self.merge_sort(A, start, mid, sort_list)
+        self.merge_sort(A, mid + 1, end, sort_list)
+        self.merge_list(A, start, mid, end, sort_list)
+    def merge_list(self, A, start, mid, end, sort_list):
+        pre_index = start
+        post_index = mid + 1
+        sort_index = start
+        while pre_index <= mid and post_index <= end:
+            if A[pre_index] < A[post_index]:
+                sort_list[sort_index] = A[pre_index]
+                pre_index += 1
+                sort_index += 1
+            else:
+                sort_list[sort_index] = A[post_index]
+                post_index += 1
+                sort_index += 1
+        while pre_index <= mid:
+            sort_list[sort_index] = A[pre_index]
+            pre_index += 1
+            sort_index += 1
+        while post_index <= end:
+            sort_list[sort_index] = A[post_index]
+            post_index += 1
+            sort_index += 1
+        for i in range(start, end + 1):
+            A[i] = sort_list[i]
+
+test = Solution()
+test.sortIntegers2([3,9,4,1,2,7,8,5])
+
+class Solution:
+    """
+    Quick Sort, 10
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        if A is None or len(A) == 0: # handle exception,
+            return
+        start = 0
+        end = len(A) - 1 # end, inclusive
+        self.quick_sort(A, start, end)
+        print(A)
+    def quick_sort(self, A, start, end):
+        if start >= end: # end condition of recursion,
+            return
+        left = start
+        right = end
+        mid = int((start + end)/2)
+        pivot = A[mid] # Pivot value, not index 
+        while (left <= right): # left <= right
+            while left <= right and A[left] < pivot: # < pivot
+                left += 1
+            while left <= right and A[right] > pivot:
+                right -= 1
+            if left <= right: # left <= right
+                A[left], A[right] = A[right], A[left]
+                left += 1
+                right -= 1
+        self.quick_sort(A, start, right) # recurse half
+        self.quick_sort(A, left, end)
+
+test = Solution()
+test.sortIntegers2([1,4,2,7,8,5,3])

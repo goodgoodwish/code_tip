@@ -1,52 +1,34 @@
 class Solution:
     """
     @param A: an integer array
-    @param target: An integer
-    @param k: An integer
-    @return: an integer array
+    @return: nothing
     """
-    def kClosestNumbers(self, A, target, k):
-        new_arr = []
+    def sortIntegers2(self, A):
+        # write your code here
+        if A is None or len(A) == 0:
+            return
         start = 0
         end = len(A) - 1
-        target_pos = 0
-        top = 1
-        left = 1
-        right = 1
-        while start + 1 < end:
-            mid = int(start + (end - start)/2)
-            if A[mid] == target:
-                target_pos = mid
-                break
-            if A[mid] < target:
-                start = mid
-            else:
-                end = mid
-        if A[mid] == target:
-            pass
-        elif abs(A[start] - target) < abs(A[end] - target):
-            target_pos = start
-        else:
-            target_pos = end
-        new_arr.append(A[target_pos])
-        print(target_pos)
-        for i in range(k - 1):
-            print(left, right, i)
-            if left > target_pos:
-                new_arr.append(A[target_pos + right])
-                right += 1
-            elif right + target_pos > len(A) - 1:
-                new_arr.append(A[target_pos - left])
+        self.quick_sort(A, start, end)
+        print(A)
+    def quick_sort(self, A, start, end):
+        if start >= end:
+            return
+        left = start
+        right = end
+        mid = int((start + end)/2)
+        pivot = A[mid]
+        while (left <= right):
+            while left <= right and A[left] < pivot:
                 left += 1
-            elif abs(A[target_pos - left]) <= abs(A[target_pos + right]):
-                new_arr.append(A[target_pos - left])
+            while left <= right and A[right] > pivot:
+                right -= 1
+            if left <= right:
+                A[left], A[right] = A[right], A[left]
                 left += 1
-            else:
-                new_arr.append(A[target_pos + right])
-                right += 1
-        return new_arr
+                right -= 1
+        self.quick_sort(A, start, right)
+        self.quick_sort(A, left, end)
 
 test = Solution()
-test.kClosestNumbers(A = [1, 4, 6, 8, 9, 12], target = 3, k = 3)
-test.kClosestNumbers(A = [1, 2, 3], target = 2, k = 3)
-test.kClosestNumbers(A = [1,4,6,10,20], target = 21, k = 4)
+test.sortIntegers2([1,4,2,7,8,5,3])
