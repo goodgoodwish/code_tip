@@ -1,41 +1,42 @@
 class Solution:
-    # @param k & A a integer and an array
-    # @return ans a integer
-    def kthLargestElement(self, k, A):
+    """
+    @param A: an integer rotated sorted array
+    @param target: an integer to be searched
+    @return: an integer
+    """
+    def search(self, A, target):
+        # write your code here
         if A is None or len(A) == 0:
             return -1
         start = 0
         end = len(A) - 1
-        k_value = self.quick_select(k, A, start, end)
-        print(A, k_value)
-        return k_value
-    def quick_select(self, k, A, start, end):
-        if start >= end:
-            if start == k - 1:
-                print("1st", start, A[start])
-                return A[start]
-        mid = int((start + end)/2)
-        pivot = A[mid]
-        print("pivot: ", pivot)
-        left = start 
-        right = end 
-        while left <= right:
-            while left <= right and A[left] > pivot:
-                left += 1
-            while left <= right and A[right] < pivot:
-                right -= 1
-            if left <= right:
-                A[left], A[right] = A[right], A[left]
-                left += 1
-                right -= 1
-        print(A, right)
-        if k - 1 <= right and k - 1 >= start:
-            return self.quick_select(k, A, start, right)
-        elif k - 1 >= left and k - 1 <= end:
-            return self.quick_select(k, A, left, end)
-        elif k - 1 == right + 1:
-            print("2nd, ", k - 1, A[k - 1])
-            return A[k - 1]
+        right_high = A[end]
+        return self.r_search(A, target, 0, end, right_high)
+    def r_search(self, A, target, start, end, right_high):
+        while start + 1 < end:
+            mid = start + (end - start)//2
+            print(mid, A[mid])
+            if A[mid] == target:
+                print(mid, A[mid])
+                return mid
+            elif A[mid] < right_high and target > right_high:
+                end = mid
+            elif A[mid] > right_high and target <= right_high:
+                start = mid
+            elif A[mid] < target:
+                start = mid
+            elif A[mid] > target:
+                end = mid
+        if A[start] == target:
+            return start 
+        elif A[end] == target:
+            return end
+        return -1
 
 test = Solution()
-test.kthLargestElement(5, [8,4,7,1,6,5,7,2,3])
+test.search([4, 5, 1, 2, 3], 1)
+test.search([4, 5, 1, 2, 3], 2)
+test.search([4, 5, 6, 7, 1, 2, 3], 9)
+test.search([4, 5, 6, 7, 1], 1)
+
+test.search([1, 2, 3], 1)

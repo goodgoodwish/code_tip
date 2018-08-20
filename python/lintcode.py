@@ -523,3 +523,101 @@ test.sortColors2([3, 2, 2, 1, 4], 4)
 test.sortColors2([3, 2, 2, 1, 4,5,6,7,6,5,4,3,2,1], 7)
 
 test.sortColors2([2,1,1,2,2],2)
+
+class Solution:
+    """
+    @param nums: A list of integer which is 0, 1 or 2 
+    @return: nothing
+    """
+    def sortColors(self, nums):
+        # write your code here
+        if nums is None or len(nums) == 0:
+            return 
+        i0, i1 = 0, 0
+        i2 = len(nums) - 1
+        while i1 <= i2:
+            if nums[i1] == 0:
+                nums[i1], nums[i0] = nums[i0], nums[i1]
+                i0 += 1
+                i1 += 1
+            elif nums[i1] == 1:
+                i1 += 1
+            elif nums[i1] == 2:
+                nums[i1], nums[i2] = nums[i2], nums[i1]
+                i2 -= 1
+            print(nums, i0, i1, i2)
+        print(nums)
+
+test = Solution()
+test.sortColors([2, 1, 0, 0, 1, 2])
+test.sortColors([1, 2, 2, 1, 0])
+test.sortColors([2,0,0,1,2,0,2])
+
+https://www.lintcode.com/problem/search-in-rotated-sorted-array/
+
+class Solution:
+    """
+    @param A: an integer rotated sorted array
+    @param target: an integer to be searched
+    @return: an integer
+    """
+    def search(self, A, target):
+        # write your code here
+        if A is None or len(A) == 0:
+            return -1
+        start = 0
+        end = len(A) - 1
+        right_high = A[end]
+        return self.r_search(A, target, 0, end, right_high)
+    def r_search(self, A, target, start, end, right_high):
+        while start + 1 < end:
+            mid = start + (end - start)//2
+            print(mid, A[mid])
+            if A[mid] == target:
+                print(mid, A[mid])
+                return mid
+            elif A[mid] <= right_high and target > right_high:
+                end = mid
+            elif A[mid] > right_high and target <= right_high:
+                start = mid
+            elif A[mid] < target:
+                start = mid
+            elif A[mid] > target:
+                end = mid
+        if A[start] == target:
+            return start 
+        elif A[end] == target:
+            return end
+        return -1
+
+test = Solution()
+test.search([4, 5, 1, 2, 3], 1)
+test.search([4, 5, 1, 2, 3], 4)
+test.search([4, 5, 6, 7, 1, 2, 3], 9)
+test.search([4, 5, 6, 7, 1], 1)
+test.search([1, 2, 3], 1)
+
+class Solution:
+    """
+    @param nums: a rotated sorted array
+    @return: the minimum number in the array
+    """
+    def findMin(self, nums):
+        # write your code here
+        if nums is None or len(nums) == 0:
+            return
+        if len(nums) == 1:
+            return nums[0]
+        start = 0
+        end = len(nums) - 1
+        right_high = nums[end]
+        while start + 1 < end:
+            mid = start + (end - start)//2
+            if nums[mid] > right_high:
+                start = mid
+            else:
+                end = mid
+        return min(nums[start], nums[end] )
+
+test = Solution()
+test.findMin([4, 5, 1, 2, 3])
