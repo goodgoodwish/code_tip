@@ -439,3 +439,87 @@ class Solution:
 
 test = Solution()
 test.sortIntegers2([1,4,2,7,8,5,3])
+
+class Solution:
+    # @param k & A a integer and an array
+    # @return ans a integer
+    def kthLargestElement(self, k, A):
+        if A is None or len(A) == 0:
+            return -1
+        start = 0
+        end = len(A) - 1
+        k_value = self.quick_select(k, A, start, end)
+        print(A, k_value)
+        return k_value
+    def quick_select(self, k, A, start, end):
+        if start >= end:
+            if start == k - 1:
+                print("1st", start, A[start])
+                return A[start]
+        mid = int((start + end)/2)
+        pivot = A[mid]
+        print("pivot: ", pivot)
+        left = start 
+        right = end 
+        while left <= right:
+            while left <= right and A[left] > pivot:
+                left += 1
+            while left <= right and A[right] < pivot:
+                right -= 1
+            if left <= right:
+                A[left], A[right] = A[right], A[left]
+                left += 1
+                right -= 1
+        print(A, right)
+        if k - 1 <= right and k - 1 >= start:
+            return self.quick_select(k, A, start, right)
+        elif k - 1 >= left and k - 1 <= end:
+            return self.quick_select(k, A, left, end)
+        elif k - 1 == right + 1:
+            print("2nd, ", k - 1, A[k - 1])
+            return A[k - 1]
+
+test = Solution()
+test.kthLargestElement(5, [8,4,7,1,6,5,7,2,3])
+
+class Solution:
+    """
+    @param colors: A list of integer
+    @param k: An integer
+    @return: nothing
+    """
+    def sortColors2(self, colors, k):
+        # write your code here
+        if colors is None or len(colors) == 1:
+            return 
+        end = len(colors) - 1
+        self.sort_range(colors, 1, k, 0, end)
+        print(colors)
+    def sort_range(self, arr, k_start, k_end, arr_start, arr_end):
+        if k_start == k_end:
+            return
+        k_mid = k_start + int((k_end - k_start)/2)
+        arr_mid = self.sort_color(arr, k_mid, arr_start, arr_end)
+        self.sort_range(arr, k_start, k_mid, arr_start, arr_mid)
+        self.sort_range(arr, k_mid + 1, k_end, arr_mid, arr_end)
+    def sort_color(self, arr, k_mid, start_index, end_index):
+        if start_index >= end_index:
+            return 
+        left = start_index 
+        right = end_index 
+        while left <= right:
+            while left <= right and arr[left] <= k_mid:
+                left += 1
+            while left <= right and arr[right] > k_mid:
+                right -= 1
+            if left <= right:
+                arr[left], arr[right] = arr[right], arr[left]
+                left += 1
+                right -= 1
+        return right
+
+test = Solution()
+test.sortColors2([3, 2, 2, 1, 4], 4)
+test.sortColors2([3, 2, 2, 1, 4,5,6,7,6,5,4,3,2,1], 7)
+
+test.sortColors2([2,1,1,2,2],2)

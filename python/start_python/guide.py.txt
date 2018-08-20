@@ -1,0 +1,117 @@
+class Solution:
+    """
+    @param nums: An integer array sorted in ascending order
+    @param target: An integer
+    @return: An integer, last position that value = target
+    Goal: Binary search template, from JiuZhang
+    """
+    def findPosition(self, nums, target):
+        if (nums == None or len(nums) == 0):
+            return -1
+        start = 0
+        end = len(nums) - 1
+        # 要点1: start + 1 < end .
+        while (start + 1 < end):
+	    # 要点2：start + (end - start) / 2, 2^32 - 1, result integer might overflow .
+            mid = int(start + (end - start) / 2)
+            # 要点3：=, <, > 分开讨论，mid 不 +1, 也不 -1 .
+            if (nums[mid] == target):
+                end = mid # first
+                # start = mid # last
+            elif (nums[mid] < target):
+                start = mid
+            else:
+                end = mid
+        # 要点4: 循环结束后，单独处理start和end.
+        print("Out of loop: ", start, end)
+        if (nums[start] == target):
+            return start
+        if (nums[end] == target):
+            return end
+        return -1
+
+test = Solution()
+test.findPosition(nums = [1, 2, 2, 2, 4, 5, 5], target = 2)
+class Solution:
+    """
+    Merge Sort 2, better naming,
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        # write your code here
+        if A is None or len(A) == 0:
+            return
+        start = 0
+        end = len(A) - 1
+        sort_list = [None] * (end + 1)
+        self.merge_sort(A, start, end, sort_list)
+        print(A)
+    def merge_sort(self, A, start, end, sort_list):
+        if start >= end:
+            return
+        mid = int((start + end)/2)
+        self.merge_sort(A, start, mid, sort_list)
+        self.merge_sort(A, mid + 1, end, sort_list)
+        self.merge_list(A, start, mid, end, sort_list)
+    def merge_list(self, A, start, mid, end, sort_list):
+        pre_index = start
+        post_index = mid + 1
+        sort_index = start
+        while pre_index <= mid and post_index <= end:
+            if A[pre_index] < A[post_index]:
+                sort_list[sort_index] = A[pre_index]
+                pre_index += 1
+                sort_index += 1
+            else:
+                sort_list[sort_index] = A[post_index]
+                post_index += 1
+                sort_index += 1
+        while pre_index <= mid:
+            sort_list[sort_index] = A[pre_index]
+            pre_index += 1
+            sort_index += 1
+        while post_index <= end:
+            sort_list[sort_index] = A[post_index]
+            post_index += 1
+            sort_index += 1
+        for i in range(start, end + 1):
+            A[i] = sort_list[i]
+
+test = Solution()
+test.sortIntegers2([3,9,4,1,2,7,8,5])
+
+class Solution:
+    """
+    Quick Sort, 10min, steps: pivot, move left pointer, move right pointer, swap, recurse half
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        if A is None or len(A) == 0: # handle exception,
+            return
+        start = 0
+        end = len(A) - 1 # end, inclusive
+        self.quick_sort(A, start, end)
+        print(A)
+    def quick_sort(self, A, start, end):
+        if start >= end: # end condition of recursion,
+            return
+        left = start
+        right = end
+        mid = int((start + end)/2)
+        pivot = A[mid] # Pivot value, not index 
+        while (left <= right): # left <= right
+            while left <= right and A[left] < pivot: # < pivot
+                left += 1
+            while left <= right and A[right] > pivot:
+                right -= 1
+            if left <= right: # left <= right
+                A[left], A[right] = A[right], A[left]
+                left += 1
+                right -= 1
+        self.quick_sort(A, start, right) # recurse half
+        self.quick_sort(A, left, end)
+
+test = Solution()
+test.sortIntegers2([1,4,2,7,8,5,3])
