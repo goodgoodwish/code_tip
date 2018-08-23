@@ -621,3 +621,181 @@ class Solution:
 
 test = Solution()
 test.findMin([4, 5, 1, 2, 3])
+
+class Solution:
+    """
+    @param: x: the base number
+    @param: n: the power number
+    @return: the result
+    """
+    def myPow(self, x, n):
+        # write your code here
+        if n < 0:
+            n = -n 
+            x = 1/x 
+        if n == 0:
+            return 1
+        if n > 1000:
+            n = 1000
+        n_half = n // 2
+        if n % 2 == 1:
+            return x * self.myPow(x, n_half) * self.myPow(x, n_half)
+        else:
+            return self.myPow(x, n_half) * self.myPow(x, n_half)
+
+test = Solution()
+test.myPow(2, 2)
+test.myPow(2, 3)
+test.myPow(34.00515, -3)
+test.myPow(2.0, -2147483648)
+test.myPow(2.0, -2047483648)
+
+
+class Solution:
+    """
+    @param: x: the base number
+    @param: n: the power number
+    @return: the result
+    """
+    def pow(self, x, n):
+        # write your code here
+        if n < 0:
+            x = 1/x
+            n = -n
+        result = 1
+        base = x
+        while n > 0:
+            if n%2 == 1:
+                result = base * result
+            base *= base
+            n = n // 2 
+        return result
+
+test = Solution()
+test.pow(2, 2)
+test.pow(2, 3)
+test.pow(34.00515, -3)
+test.pow(2.0, -2147483648)
+
+
+7 = 4 + 2 + 1 = 0B111 = 2^4 * 2^2 * 2^1
+                        ^    <==    ^
+                        |           |
+move bit to right, if current right most bit is 1, result = previous_result * current_base.
+
+7 >> 1 = 3 = 2 + 1 = 0B11
+7 >> 2 = 3 >> 1 = 1 = 0B1
+
+class Solution:
+    """
+    @param: x: the base number
+    @param: n: the power number
+    @return: the result
+    """
+    def pow(self, x, n):
+        if n < 0:
+            n = -n
+            x = 1/x
+        if n == 0:
+            return 1
+        base = x
+        result = 1
+        while n > 0:
+            if n % 2 == 1:
+                result = result * base
+            base *= base
+            n = n >> 1
+            if n > 1 and (result < 0.01 or base < 0.01):
+                return 0.00
+        return result
+
+test = Solution()
+test.pow(2, 3)
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+
+class Node:
+    def __init__(self, value):
+        self.value = value 
+        self.left = None 
+        self.right = None
+
+class Solution:
+    """
+    Iterative. without recursion. Non Recursive Approach.
+    .
+    @param root: A Tree
+    @return: Inorder in ArrayList which contains node values.
+    """
+    def inorderTraversal(self, root):
+        # write your code here
+        node = root
+        A = []
+        stack = []
+        while ((node is not None) or stack):
+            if node is not None:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                A.append(node.val)
+                node = node.right
+        return A
+
+test = Solution()
+test.inorderTraversal(bst)
+
+class Solution:
+    """
+    Recursive Approach.
+    @param root: A Tree
+    @return: Inorder in ArrayList which contains node values.
+    """
+    def __init__(self):
+        self.A = []
+    def inorderTraversal(self, root):
+        # write your code here
+        if root is None:
+            return self.A
+        self.inorderTraversal(root.left)
+        self.A.append(root.val)
+        self.inorderTraversal(root.right)
+        return self.A
+
+class Solution:
+    """
+    @param root: A Tree
+    @return: Postorder in ArrayList which contains node values.
+    """
+    def postorderTraversal(self, root):
+        A = []
+        def travel(root):
+            if root is None:
+                return
+            travel(root.left)
+            travel(root.right)
+            A.append(root.val)
+        travel(root)
+        return A
+
+bst = TreeNode(5)
+bst.left = TreeNode(3)
+bst.left.left = TreeNode(1)
+bst.right = TreeNode(8)
+bst.right.left = TreeNode(7)
+test = Solution()
+test.postorderTraversal(bst)
+
+class Solution:
+    """
+    iterative postorder binary tree traversal, without recursion.
+    
+    @param root: A Tree
+    @return: Postorder in ArrayList which contains node values.
+    """
+    def postorderTraversal(self, root):
+        pass 
+
