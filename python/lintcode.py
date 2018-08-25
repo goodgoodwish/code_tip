@@ -712,16 +712,16 @@ class Solution:
 test = Solution()
 test.pow(2, 3)
 
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left, self.right = None, None
-
 class Node:
     def __init__(self, value):
         self.value = value 
         self.left = None 
         self.right = None
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
 
 class Solution:
     """
@@ -742,9 +742,19 @@ class Solution:
             else:
                 node = stack.pop()
                 A.append(node.val)
+                print("node pop", node.val)
                 node = node.right
+                right_val = (node.val if node else "-")
+                print("node right", right_val)
         return A
 
+bst = TreeNode(5)
+bst.left = TreeNode(3)
+bst.left.left = TreeNode(1)
+bst.right = TreeNode(8)
+bst.right.left = TreeNode(7)
+bst.right.right = TreeNode(10)
+bst.right.right.right = TreeNode(15)
 test = Solution()
 test.inorderTraversal(bst)
 
@@ -797,5 +807,36 @@ class Solution:
     @return: Postorder in ArrayList which contains node values.
     """
     def postorderTraversal(self, root):
-        pass 
+        if root == None:
+            return []
+        last_visit_node = None 
+        node = root
+        stack = []
+        A = []
+        while node != None or stack:
+            if node != None: 
+                stack.append(node)
+                node = node.left
+            else:
+                peek_node = stack[-1]
+                print("peek node", peek_node.val)
+                # end of left child, or move up on left child,
+                # if right child exists, traversing right child node,
+                # from left child, then move to right child
+                if peek_node.right != None and last_visit_node != peek_node.right:
+                    node = peek_node.right 
+                else:
+                    last_visit_node = stack.pop()
+                    A.append(last_visit_node.val)
+                    # A.append(peek_node.val)
+                    # last_visit_node = stack.pop()
+        print(A)
+        return A
 
+bst = TreeNode(5)
+bst.left = TreeNode(3)
+bst.left.left = TreeNode(1)
+bst.right = TreeNode(8)
+bst.right.left = TreeNode(7)
+test = Solution()
+test.postorderTraversal(bst)

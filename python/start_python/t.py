@@ -30,3 +30,26 @@ test.myPow(2, 2)
 test.myPow(2, 3)
 test.myPow(34.00515, -3)
 test.myPow(2.0, -2147483648)
+
+class Parent:
+    def __init__(self, name):
+        self.father, self.mother = None, None
+        self.name = name
+
+p = Parent("z3")
+p.father = Parent("z2")
+p.mother = Parent("l2")
+p.father.father = Parent("z1")
+
+def find_parents(person, parents):
+    if person.father is not None:
+        p = person.father
+        parents.append(p.name)
+        find_parents(p, parents) 
+    if person.mother is not None:
+        p = person.mother
+        parents.append(p.name)
+        find_parents(p, parents) 
+    return parents
+
+find_parents(p, [])
