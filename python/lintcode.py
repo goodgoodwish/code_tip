@@ -820,11 +820,11 @@ class Solution:
             else:
                 peek_node = stack[-1]
                 print("peek node", peek_node.val)
-                # end of left child, or move up on left child,
+                # at end of left child, or move up on left child,
                 # if right child exists, traversing right child node,
                 # from left child, then move to right child
                 if peek_node.right != None and last_visit_node != peek_node.right:
-                    node = peek_node.right 
+                    node = peek_node.right # go to left child, in next recursion, alwasy, in post-order,
                 else:
                     last_visit_node = stack.pop()
                     A.append(last_visit_node.val)
@@ -840,3 +840,231 @@ bst.right = TreeNode(8)
 bst.right.left = TreeNode(7)
 test = Solution()
 test.postorderTraversal(bst)
+
+Chapter 4,
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+from collections import deque
+
+class Solution:
+    """
+    @param root: A Tree
+    @return: Level order a list of lists of integer
+    """
+    def levelOrder(self, root):
+        # write your code here
+        if root is None:
+            return []
+        A = []
+        level = []
+        q = deque([root, None])
+        while q:
+            node = q.popleft()
+            print("len", len(q))
+            if node == None and len(q) < 1:
+                break
+            if node == None:
+                q.append(None)
+                A.append(level)
+                print("level ", level)
+                level = []
+                continue
+            print("val ", node.val)
+            level.append(node.val)
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        return A
+
+Chapter 5. 
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+
+Example of iterate a tree:
+iterator = BSTIterator(root)
+while iterator.hasNext():
+    node = iterator.next()
+    do something for node 
+"""
+
+
+class BSTIterator:
+    """
+    @param: root: The root of binary tree.
+    """
+    def __init__(self, root):
+        # do intialization if necessary
+        self.stack = []
+        while root is not None:
+            self.stack.append(root)
+            root = root.left
+
+    """
+    @return: True if there has next node, or false
+    """
+    def hasNext(self, ):
+        # write your code here
+        return len(self.stack) > 0
+
+    """
+    @return: return next node
+    """
+    def next(self, ):
+        current_node = self.stack[-1]
+        if current_node.right is not None:
+            node = current_node.right
+            while node is not None:
+                self.stack.append(node)
+                node = node.left
+        else:
+            visited_node = self.stack.pop()
+            while self.stack and self.stack[-1].right == visited_node:
+                visited_node = self.stack.pop()
+        return current_node
+
+
+def gen_2():
+    yield 1
+    yield 2
+
+generator01 = gen_2()
+
+next(generator01) # 1
+next(generator01) # 2
+next(generator01) # return exception: StopIteration
+
+generator01 = gen_2()
+iterator01 = generator01.__iter__()
+
+iterator01.__next__() # return 1
+iterator01.__next__() # return 2
+iterator01.__next__() # return exception: StopIteration
+
+
+import collections
+
+class MyIter:
+    def __init__(self,):
+        self.q = collections.deque()
+        self.generator01 = self.gen_2()
+        # iterator01 = generator01.__iter__()
+    def gen_2(self,):
+        yield 1
+        yield 2
+    def next(self,):
+        if self.has_next():
+            next_value = self.q.popleft()
+            return next_value
+    def has_next(self,):
+        if len(self.q) > 0:
+            return True
+        try:
+            next_value = next(self.generator01) # or, iterator01.__next__()
+            print("next val:", next_value)
+            self.q.append(next_value)
+            return True
+        except StopIteration:
+            return False
+
+iter1 = MyIter()
+iter1.has_next() # True
+iter1.next() # 1
+iter1.next() # 2
+iter1.has_next() # False
+iter1.next() # nothing
+iter1.has_next() # False
+
+import collections
+class BSTIterator:
+    """
+    @param: root: The root of binary tree.
+    """
+    def __init__(self, root):
+        self.q = collections.deque()
+        self.generator01 = self.bst_inorder_gen(root)
+    """
+    @return: True if there has next node, or false
+    """
+    def hasNext(self,):
+        if len(self.q) > 0:
+            return True
+        try:
+            next_value = next(self.generator01) # or, iterator01.__next__()
+            # print("next val:", next_value.val)
+            self.q.append(next_value)
+            return True
+        except StopIteration:
+            return False
+    """
+    @return: return next node
+    """
+    def next(self,):
+        if self.hasNext():
+            next_value = self.q.popleft()
+            return next_value
+    def bst_inorder_gen(self, root):
+        if root is None:
+            return 
+        stack = []
+        node = root
+        while stack or node is not None:
+            if node is not None:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                yield node # visit node 
+                node = node.right
+
+#
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+
+bst = TreeNode(5)
+bst.left = TreeNode(3)
+bst.left.left = TreeNode(1)
+bst.right = TreeNode(8)
+bst.right.left = TreeNode(7)
+
+iterator = BSTIterator(bst)
+while iterator.hasNext():
+    node = iterator.next()
+    print(node.val)
+
+
+class BSTIterator:
+    #@param root: The root of binary tree.
+    def __init__(self, root):
+        self.stack = []
+        self.current_node = root
+
+    #@return: True if there has next node, or false
+    def hasNext(self):
+        return self.current_node is not None or len(self.stack) > 0
+
+    #@return: return next node
+    def next(self):
+        while self.current_node is not None:
+            self.stack.append(self.current_node)
+            self.current_node = self.current_node.left
+            
+        self.current_node = self.stack.pop()
+        visit_node = self.current_node
+        self.current_node = self.current_node.right
+        return visit_node
+
+#
