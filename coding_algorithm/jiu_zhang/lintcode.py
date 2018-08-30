@@ -787,7 +787,7 @@ class Solution:
                 return
             travel(root.left)
             travel(root.right)
-            A.append(root.val)
+            A.append(root.val) # visit node,
         travel(root)
         return A
 
