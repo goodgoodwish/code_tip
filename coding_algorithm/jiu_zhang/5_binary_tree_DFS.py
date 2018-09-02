@@ -151,7 +151,6 @@ class Solution:
     @return: all root-to-leaf paths
     """
     def binaryTreePaths(self, root):
-
         if root is None:
             return []
         A = []
@@ -179,3 +178,17 @@ b_tree.right = TreeNode(2)
 test = Solution()
 l = test.binaryTreePaths(b_tree)
 print("root:", l)
+
+class Solution:
+    def binaryTreePaths(self, root):
+        # Divider Conquer with DFS
+        if root is None:
+            return []
+        if root.left is None and root.right is None:
+            return [str(root.val)]
+        paths = []
+        for path in self.binaryTreePaths(root.left):
+            paths.append(str(root.val) + "->" + path)
+        for path in self.binaryTreePaths(root.right):
+            paths.append(str(root.val) + "->" + path)
+        return paths

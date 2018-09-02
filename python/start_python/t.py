@@ -16,6 +16,7 @@ class Solution:
             path.append(str(root.val))
             A.append("->".join(path))
             print(path)
+            path.pop()
         # path.append(str(root.val))
         if root.left:
             path.append(str(root.val))
