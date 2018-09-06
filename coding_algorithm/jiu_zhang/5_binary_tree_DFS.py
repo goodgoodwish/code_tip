@@ -209,3 +209,137 @@ class Solution:
                 prev_value = value
         return value
 
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+
+class Solution:
+    """
+    @param root: a TreeNode, the root of the binary tree
+    @return: nothing
+    """
+    def flatten(self, root):
+        # write your code here
+        def inorder(root):
+            if root is None:
+                return None, None
+            if root.left is None and root.right is None:
+                head = root
+                tail = root
+                return (head, tail)
+            next_right = root.right if root.right else None
+            if root.left:
+                (head, tail) = inorder(root.left)
+                root.right = head
+                tail.right = next_right
+                root.left = None
+            if next_right:
+                (_, tail) = inorder(root.right)
+            head = root
+            return(head, tail)
+        head, tail = inorder(root)
+        return head
+
+#    2
+# 3     4
+
+# 2 -> 3 -> 4
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if this Binary tree is Balanced, or false.
+    """
+    def isBalanced(self, root):
+        # write your code here
+        def postorder(root):
+            if root is None:
+                return True, 0
+            if root.left is None and root.right is None:
+                return True, 1
+            left_h = 0
+            right_h = 0
+            left_bal, right_bal = True, True
+            if root.left:
+                left_bal, left_h = postorder(root.left)
+            if root.right:
+                right_bal, right_h = postorder(root.right)
+            if not (right_bal and left_bal):
+                return False, 0
+            if abs(left_h - right_h) > 1:
+                return False, 0
+            else:
+                return True, max(left_h, right_h) + 1
+        bal, h = postorder(root)
+        return bal 
+
+b_tree = TreeNode(5)
+b_tree.left = TreeNode(3)
+b_tree.right = TreeNode(2)
+b_tree.right.right = TreeNode(1)
+
+test = Solution()
+r = test.isBalanced(b_tree)
+print("root:", r)
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        def check_tree(root):
+            # Divide and conquer,
+            if root is None:
+                return True, None, None
+            if root.left is None and root.right is None:
+                return True, root.val, root.val
+            left_is_bst, right_is_bst = True, True
+            left_max, left_min = -float("inf"), float("inf")
+            right_max, right_min = -float("inf"), float("inf")
+            if root.left:
+                left_is_bst, left_max, left_min = check_tree(root.left)
+            if root.right:
+                right_is_bst, right_max, right_min = check_tree(root.right)
+            curr_min = min(root.val, left_min, right_min)
+            curr_max = max(root.val, left_max, right_max)
+            if not (left_is_bst and right_is_bst):
+                return False, 0, 0
+            if left_max < root.val < right_min:
+                return True, curr_max, curr_min
+            return False, 0, 0
+        result, _, _ = check_tree(root)
+        return result
+
+# r = test.deserialize("2,1,4,#,#,3,5")
+test = Solution()
+r = test.isValidBST(r)
+print("is BST", r)
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def __init__(self):
+        self.is_valid = True
+        self.last_value = -float("inf")
+    def inorder(self, root):
+        # inorder traverse, should be in ascending,
+        if self.is_valid is False:
+            return
+        if root is None:
+            return
+        if root.left:
+            self.inorder(root.left)
+        # Visit node in middle,
+        if root.val <= self.last_value:
+            self.is_valid = False
+            return
+        self.last_value = root.val
+        if root.right:
+            self.inorder(root.right)
+    def isValidBST(self, root):
+        self.inorder(root)
+        return self.is_valid
