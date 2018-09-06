@@ -192,3 +192,20 @@ class Solution:
         for path in self.binaryTreePaths(root.right):
             paths.append(str(root.val) + "->" + path)
         return paths
+
+class Solution:
+    def closestValue(self, root, target):
+        # write your code here
+        min_diff = float("inf")
+        while root:
+            if abs(root.val - target) < min_diff:
+                value = root.val
+                min_diff = abs(root.val - target)
+            if target > root.val:
+                root = root.right
+            else:
+                root = root.left
+            if root:
+                prev_value = value
+        return value
+

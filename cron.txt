@@ -6,3 +6,4 @@
 
 00 10 * * * /Users/charliezhu/work/bin/responsys.sh >> /Users/charliezhu/app/log/responsys.log 2>&1
 04 10 * * 4 /Users/charliezhu/work/bin/appapi.sh >> /Users/charliezhu/app/log/appapi.log 2>&1
+05 14 * * * /Users/charliezhu/work/bin/top_10_mail.sh >> /Users/charliezhu/app/log/top_10_mail.log 2>&1
