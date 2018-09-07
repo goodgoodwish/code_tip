@@ -343,3 +343,41 @@ class Solution:
     def isValidBST(self, root):
         self.inorder(root)
         return self.is_valid
+
+    def lowestCommonAncestor3(self, root, A, B):
+        a, b = A.val, B.val
+        def search_ab(root,a,b):
+            if not root:
+                return None, None 
+            r1,r2,n1,n2 = None,None,None,None 
+            if a == b and root.val == a:
+                return 0, root
+            if root.left is None and root.right is None:
+                return root.val, None
+            if root.left:
+                r1, n1 = search_ab(root.left, a, b)
+            if root.right:
+                r2, n2 = search_ab(root.right, a, b)
+            if n1 or n2:
+                return 0, n1 or n2
+            # print("val,a,b,r1,r2", root.val, a, b, r1, r2)
+            if r1 in (a, b) and r2 in (a, b):
+                print(root.val, a, b)
+                return 0, root
+            if (root.val in (a, b) and (r1 in (a, b) or r2 in (a, b))):
+                print(root.val, a, b)
+                return 0, root
+            if r1 in (a, b):
+                return r1, None
+            if r2 in (a,b):
+                return r2, None
+            return root.val, None
+        _, Node = search_ab(root, a, b)
+        return Node
+
+tree = Construct()
+root = tree.deserialize("4,3,7,#,#,5,6")
+print(root.val)
+
+r = test.lowestCommonAncestor3(root, A, B)
+print("LCA is", r)
