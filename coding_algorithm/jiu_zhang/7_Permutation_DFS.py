@@ -1,11 +1,36 @@
+# 7. Permutation and Graph based DFS,
+
 class Solution:
     """
-    @param A: An array of integers
-    @return: A long integer
+    @param: nums: A list of integers.
+    @return: A list of permutations.
     """
-    def permutationIndex(self, A):
-        # write your code here
-        pass
+    def dfs(self, nums, perm, visited, results):
+        nums_size = len(nums)
+        if len(perm) == nums_size:
+            results.append(list(perm))
+            return
+        for i in range(nums_size):
+            if visited[i]:
+                continue
+            perm.append(nums[i])
+            visited[i] = True
+            self.dfs(nums, perm, visited, results)
+            perm.pop()
+            visited[i] = False
+
+    def permute(self, nums):
+        if nums is None:
+            return
+        perm = []
+        results = []
+        visited = [False for _ in range(len(nums))]
+        self.dfs(nums, perm, visited, results)
+        return results 
+
+test = Solution()
+r = test.permute([2,3,4])
+print(r)
 
 class Solution:
     """
@@ -37,6 +62,5 @@ class Solution:
 
 
 test = Solution()
-# r = test.permutationIndex([1,2,4])
 r = test.permute([2,2,2,4])
 print(r)
