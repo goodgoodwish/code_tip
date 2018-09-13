@@ -1,20 +1,26 @@
 class Solution:
     """
-    @param: start: a string
-    @param: end: a string
-    @param: dict: a set of string
-    @return: a list of lists of string
+    @param nums: A list of integers
+    @return: A integer indicate the sum of max subarray
     """
-    def findLadders(self, start, end, dict):
-        # write your code here
-        return []
-
-start = "a"
-end = "c"
-dict = ["a","b","c"]
+    def maxSubArray(self, nums):
+        min_sum = 0
+        max_sum = -float("inf")
+        sum = 0
+        start = 0
+        end = 0
+        for i in range(len(nums)):
+            sum = sum + nums[i]
+            max_sum = max(sum, max_sum)
+            min_sum = min(sum, min_sum)
+            if sum == min_sum:
+                start = i + 1
+            if sum == max_sum:
+                end = i + 1 
+        return nums[start:end]
 
 test = Solution()
-r = test.findLadders(start, end, dict)
+r = test.maxSubArray([-2,2,-3,4,-1,2,1,-5,3])
 print(r)
 
 # https://lintcode.com/problem/count-of-smaller-number-before-itself/description
