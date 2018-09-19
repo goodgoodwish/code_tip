@@ -1,2 +1,12 @@
 {
+  "editor.quickSuggestions": {
+    "other": false,
+    "comments": false,
+    "strings": false
+  },
+  "editor.quickSuggestionsDelay": 90,
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.wordBasedSuggestions": false,
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.parameterHints.enabled": false,
 }
