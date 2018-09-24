@@ -270,3 +270,115 @@ test = Solution()
 r = test.wordSearchII(board, words)
 print(r)
 
+class Solution:
+    """
+    @param str: A string
+    @return: all permutations
+    """
+    def stringPermutation2(self, str):
+        A = sorted(list(str))
+        results = []
+        visited = [False] * len(A)
+        self.dfs(A, visited, [], results)
+        return results
+    def dfs(self, A, visited, perm, results):
+        size = len(A)
+        if len(perm) == len(A):
+            results.append("".join(perm))
+            return
+        for i in range(size):
+            if visited[i]:
+                continue
+            if i > 0 and A[i] == A[i - 1] and (not visited[i - 1]):
+                continue
+            visited[i] = True
+            perm.append(A[i])
+            self.dfs(A, visited, perm, results)
+            visited[i] = False
+            perm.pop()
+
+test = Solution()
+str = 'baac'
+r = test.stringPermutation2(str)
+print(r)
+
+import collections
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def __init__(self,):
+        self.word_index = {}
+    def findLadders(self, start, end, dict):
+        self.build_index(start, end, dict)
+        steps2end = {}
+        self.bfs(start, end, steps2end)
+        results = []
+        self.dfs(start, end, steps2end, [start], results)
+        return results
+    def find_next_words(self, word):
+        words = []
+        for i in range(len(word)):
+            # print(word[:i] + "%" + word[i + 1:])
+            edges = self.word_index.get(word[:i] + "%" + word[i + 1:], [])
+            # print(i, edges)
+            words.extend(edges)
+        return words
+    def build_index(self, start, end, dict):
+        dict.add(end)
+        dict.add(start)
+        for word in dict:
+            for i in range(0, len(word)):
+                if word[:i] + "%" + word[i + 1: ] not in self.word_index:
+                    self.word_index[word[:i] + "%" + word[i + 1: ]] = set()
+                self.word_index[word[:i] + "%" + word[i + 1: ]].add(word)
+    def bfs(self, start, end, steps2end):
+        # from end to start
+        q = collections.deque([end])
+        steps = 0
+        while q:
+            size = len(q)
+            for _ in range(size):
+                curt = q.popleft()
+                if curt in steps2end:
+                    continue
+                steps2end[curt] = steps
+                words = self.find_next_words(curt)
+                for word in words:
+                    q.append(word)
+            steps += 1
+        print(steps2end)
+
+    def dfs(self, start, end, steps2end, path, results):
+        # print("start:", start)
+        if start == end:
+            results.append(path[:])
+            return 
+        words = self.find_next_words(start)
+        # print(words)
+        for word in words:
+            if word not in steps2end:
+                continue
+            # print(word, steps2end.get(word))
+            if steps2end.get(word) > steps2end[start] - 1:
+                continue
+            path.append(word)
+            self.dfs(word, end, steps2end, path, results)
+            path.pop()
+
+start = "a"
+end = "c"
+dict = set(["a","b","c"])
+
+test = Solution()
+r = test.findLadders(start, end, dict)
+print(r)
+
+start = "hit"
+end = "cog"
+dict = set(["hot","dot","dog","lot","log"])
+r = test.findLadders(start, end, dict)
+print(r)

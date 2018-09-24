@@ -296,6 +296,75 @@ print(r)
 r = test.maxProfit([3,3,5,0,0,3,1,4])
 print(r)
 
+lc, https://www.lintcode.com/problem/best-time-to-buy-and-sell-stock-with-transaction-fee 
+
+class Solution:
+    """
+    @param prices: a list of integers
+    @param fee: a integer
+    @return: return a integer
+    """
+    def maxProfit(self, prices, fee):
+        # write your code here
+        if not prices or len(prices) == 1:
+            return 0
+        tot_gain = 0
+        size = len(prices)
+        buy = - prices[0]
+        sell = 0
+        for i in range(size):
+            buy = max(buy, sell - prices[i])
+            sell = max(sell, buy + prices[i] - fee)
+        return sell
+
+test = Solution()
+r = test.maxProfit(prices = [1, 3, 2, 8, 4, 9], fee = 2)
+print(r)
+
+# 6 - 1 - 2,  not  (4 - 1 - 2) + (6 - 3 - 2)
+# 4 - 3 = 1, 1 < 2, 收益小于交易费.
+# 看看 模拟法 怎么处理.
+r = test.maxProfit(prices = [1, 4, 3, 6], fee = 2)
+print(r)
+
+r = test.maxProfit(prices = [1, 4, 2, 5], fee = 2)
+print(r)
+
+lc, https://www.lintcode.com/problem/best-time-to-buy-and-sell-stock-iv 
+
+class Solution:
+    """
+    constraint: You may complete at most k transactions.
+
+    @param prices: a list of integers
+    @param k: trade k times,
+    @return: return a integer
+    """
+    def maxProfit(self, k, prices):
+        if not prices or len(prices) == 1:
+            return 0
+        buy = -prices[0]
+        sell = 0
+        if k > len(prices):
+            for price in prices:
+                buy = max(buy, sell - price)
+                sell = max(sell, buy + price)
+            return sell
+        buys = [-float("inf")] * k
+        sells = [0] * k
+        for price in prices:
+            buys[0] = max(buys[0], -price)
+            for i in range(k):
+                if i > 0:
+                    buys[i] = max(buys[i], sells[i - 1] - price)
+                sells[i] = max(sells[i], buys[i] + price)
+        return sells[k - 1]
+
+test = Solution()
+r = test.maxProfit(prices = [1,3, 1, 4, 1, 5, 1, 6], k = 8)
+print(r)
+
+
 https://lintcode.com/problem/range-sum-query-mutable 
 
 class NumArray:
