@@ -53,6 +53,23 @@ class DbTool(object):
             traceback.print_exc()
             print("Error on database operation.")
 
+    def psql_copy_raw(self, file, sql, table, db_name='local_db'):
+        """
+        run psql \copy command, import
+        """
+        try:
+            app_name_db = self.db_config(db_name)
+            with psycopg2.connect(**app_name_db) as conn:
+                with conn.cursor() as cur:
+                    # cur.copy_from(file, table, sep=",", null="")
+                    cur.copy_expert(sql, file)
+                    cur.execute(f"select * from {table} limit 2")
+                    data = cur.fetchall()
+                    print(data)
+        except Exception:
+            traceback.print_exc()
+            print("Error on database operation.")
+
     def psql_export(self, file, query, db_name='local_db'):
         """
         run psql \copy command, export

@@ -429,3 +429,146 @@ print(obj.sumRange(1, 2))
 obj.update(1, 9)
 print(obj.sumRange(4, 4))
 obj.update(3, 4)
+
+817. Range Sum Query 2D Mutable
+
+class NumMatrix(object):
+
+    def __init__(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        """
+        self.rows = len(matrix)
+        self.cols = len(matrix[0])
+        self.bit = [[0 for _ in range(self.cols + 1)] for _ in range(self.rows + 1)]
+        self.matrix = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.update(r, c, matrix[r][c])
+        
+    def lowbit(self, x):
+        return x & (-x)
+    def update(self, row, col, val):
+        """
+        :type row: int
+        :type col: int
+        :type val: int
+        :rtype: void
+        """
+        delta = val - self.matrix[row][col]
+        self.matrix[row][col] = val
+        r = row + 1
+        while r <= self.rows:
+            c = col + 1
+            while c <= self.cols:
+                self.bit[r][c] += delta
+                c += self.lowbit(c)
+            r += self.lowbit(r)
+    def getPrefixSum(self, row, col):
+        r = row + 1
+        sum = 0
+        while r > 0:
+            c = col + 1
+            while c > 0:
+                sum += self.bit[r][c]
+                c -= self.lowbit(c)
+            r -= self.lowbit(r)
+        return sum
+    def sumRegion(self, row1, col1, row2, col2):
+        """
+        :type row1: int
+        :type col1: int
+        :type row2: int
+        :type col2: int
+        :rtype: int
+        """
+        sum = self.getPrefixSum(row2, col2)
+        sum_upside = self.getPrefixSum(row1 - 1, col2)
+        sum_leftside = self.getPrefixSum(row2, col1 - 1)
+        sum_small = self.getPrefixSum(row1 - 1, col1 - 1)
+        return sum - sum_upside - sum_leftside + sum_small
+        
+# https://www.lintcode.com/problem/range-sum-query-2d-mutable
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# obj.update(row,col,val)
+# param_2 = obj.sumRegion(row1,col1,row2,col2)
+
+# Given matrix = [
+#   [3, 0, 1, 4, 2],
+#   [5, 6, 3, 2, 1],
+#   [1, 2, 0, 1, 5],
+#   [4, 1, 0, 1, 7],
+#   [1, 0, 3, 0, 5]
+# ]
+
+# sumRegion(2, 1, 4, 3) -> 8
+# update(3, 2, 2)
+# sumRegion(2, 1, 4, 3) -> 10
+
+test = NumMatrix([[3,0,1,4,2],[5,6,3,2,1],[1,2,0,1,5],[4,1,0,1,7],[1,0,3,0,5]])
+r = test.getPrefixSum(1, 1)
+print(r)
+r = test.getPrefixSum(2, 2)
+print(r)
+r = test.sumRegion(2, 1, 4, 3)
+print(r)
+# print(test.matrix)
+# print(test.bit)
+test.update(3, 2, 2)
+r = test.sumRegion(2, 1, 4, 3)
+print(r)
+
+Range Sum Query 2D - Immutable
+
+class NumMatrix:
+    """
+    @param: matrix: a 2D matrix
+    """
+    def __init__(self, matrix):
+        self.rows = len(matrix)
+        self.cols = len(matrix[0])
+        self.matrix = [[0] * self.cols for _ in range(self.rows)]
+        self.bit = [[0] * (self.cols + 1) for _ in range(self.rows + 1)]
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.update(r, c, matrix[r][c])
+
+    def lowbit(self, x):
+        return x & (-x)
+
+    def update(self, row, col, value):
+        delta = value - self.matrix[row][col]
+        r = row + 1
+        while r <= self.rows:
+            c = col + 1
+            while c <= self.cols:
+                self.bit[r][c] += delta
+                c += self.lowbit(c)
+            r += self.lowbit(r)
+
+    def prefix_sum(self, row, col):
+        sum_val = 0
+        r = row + 1
+        while r > 0:
+            c = col + 1
+            while c > 0:
+                sum_val += self.bit[r][c]
+                c -= self.lowbit(c)
+            r -= self.lowbit(r)
+        return sum_val
+
+    """
+    @param: row1: An integer
+    @param: col1: An integer
+    @param: row2: An integer
+    @param: col2: An integer
+    @return: An integer
+    """
+    def sumRegion(self, row1, col1, row2, col2):
+        sum_upside = self.prefix_sum(row1 - 1, col2)
+        sum_leftside = self.prefix_sum(row2, col1 - 1)
+        sum_small = self.prefix_sum(row1 - 1, col1 - 1)
+        sum_big = self.prefix_sum(row2, col2)
+        return sum_big - sum_leftside - sum_upside + sum_small
